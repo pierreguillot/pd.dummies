@@ -311,7 +311,7 @@ extern void pak_setup(void)
 {
     t_class* c = NULL;
     
-    c = class_new(gensym("spam-inlet"), 0, 0, sizeof(t_pak_inlet), CLASS_PD, 0);
+    c = class_new(gensym("pak-inlet"), 0, 0, sizeof(t_pak_inlet), CLASS_PD, 0);
     if(c)
     {
         class_addbang(c,    (t_method)pak_inlet_bang);
