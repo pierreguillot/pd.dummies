@@ -19,11 +19,6 @@ matrix:
     env:
       - zip=linux_64
       - bits=64
-  - os: linux
-    compiler: clang
-    env:
-      - zip=linux_32
-      - bits=32
   - os: osx
     compiler: gcc
     env:
