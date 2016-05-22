@@ -25,7 +25,6 @@ build_script:
 
 after_build:
     - cd ..\
-    - dir /s /b /o:gn
     - del /F /S /Q /A %APPVEYOR_BUILD_FOLDER%\*.pdb
     - del /F /S /Q /A %APPVEYOR_BUILD_FOLDER%\*.ilk
     - copy %APPVEYOR_BUILD_FOLDER%\README.md %APPVEYOR_BUILD_FOLDER%\dummies\readme.txt
