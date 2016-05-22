@@ -47,7 +47,6 @@ script:
 
 after_success:
   - cd ../
-  - mv bin dummies
   - cp LICENSE dummies/license.txt
   - cp README.md dummies/readme.txt
   - zip -r dummies_$zip.zip dummies
