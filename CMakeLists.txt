@@ -45,6 +45,8 @@ endif()
 include_directories(${PROJECT_SOURCE_DIR}/pd/src/)
 
 add_library(pak SHARED ${PROJECT_SOURCE_DIR}/src/pak.c)
+add_library(crash SHARED ${PROJECT_SOURCE_DIR}/src/crash.c)
 if(${WIN32})
 		target_link_libraries(pak pd)
+    target_link_libraries(crash pd)
 endif()

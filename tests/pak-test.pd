@@ -1,0 +1,33 @@
+#N canvas 249 150 603 374 10;
+#X floatatom 79 86 0 0 0 0 - - -;
+#X msg 36 113 bang;
+#X floatatom 132 178 0 0 0 0 - - -;
+#X floatatom 218 188 0 0 0 0 - - -;
+#X obj 89 254 print;
+#X msg 175 148 symbol cat;
+#X msg 114 139 3 dog 10;
+#X text 18 339 by Pierre Guillot - 2016;
+#X msg 204 103 bang;
+#X text 9 9 The pak object acts much like the pack object except that
+every inlet triggers the output. The message set can be used to avoid
+the output. The message bang triggers the outputs.;
+#X msg 49 65 set 99 12 bird;
+#X msg 20 180 1 2 rabbit;
+#X obj 89 227 ../dummies/pak f 0 s 0;
+#X obj 237 77 loadbang;
+#X obj 237 99 t b b b b b b b;
+#X obj 324 144 print pak;
+#X msg 324 124 test...;
+#X connect 0 0 12 0;
+#X connect 1 0 12 0;
+#X connect 2 0 12 1;
+#X connect 3 0 12 3;
+#X connect 5 0 12 2;
+#X connect 6 0 12 1;
+#X connect 8 0 12 2;
+#X connect 10 0 12 0;
+#X connect 11 0 12 0;
+#X connect 12 0 4 0;
+#X connect 13 0 14 0;
+#X connect 14 6 16 0;
+#X connect 16 0 15 0;
