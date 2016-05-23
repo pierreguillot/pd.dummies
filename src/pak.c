@@ -122,6 +122,52 @@ static void pak_bang(t_pak *x)
     outlet_list(x->x_obj.ob_outlet, &s_list, x->x_n, x->x_out);
 }
 
+static void pak_copy(t_pak *x, int ndest, t_atom* dest, int nsrc, t_atom* src)
+{
+    int i;
+    for(i = 0; i < ndest && i < nsrc; ++i)
+    {
+        if(src[i].a_type == A_FLOAT)
+        {
+            if(dest[i].a_type == A_FLOAT)
+            {
+                dest[i].a_w.w_float = src[i].a_w.w_float;
+            }
+            else
+            {
+                pd_error(x, "pak: wrong type (float)");
+            }
+        }
+        else if(src[i].a_type == A_POINTER)
+        {
+            if(dest[i].a_type == A_POINTER)
+            {
+                gpointer_unset(dest[i+1].a_w.w_gpointer);
+                *(dest[i+1].a_w.w_gpointer) = *(src[i].a_w.w_gpointer);
+                if(dest[i+1].a_w.w_gpointer->gp_stub)
+                {
+                    dest[i+1].a_w.w_gpointer->gp_stub->gs_refcount++;
+                }
+            }
+            else
+            {
+                pd_error(x, "pak: wrong type (pointer)");
+            }
+        }
+        if(src[i].a_type == A_SYMBOL)
+        {
+            if(dest[i].a_type == A_SYMBOL)
+            {
+                dest[i].a_w.w_symbol = src[i].a_w.w_symbol;
+            }
+            else
+            {
+                pd_error(x, "pak: wrong type (symbol)");
+            }
+        }
+    }
+}
+
 static void pak_free(t_pak *x)
 {
     int i;
@@ -200,54 +246,12 @@ static void pak_inlet_symbol(t_pak_inlet *x, t_symbol* s)
 
 static void pak_inlet_list(t_pak_inlet *x, t_symbol* s, int argc, t_atom* argv)
 {
-    int i;
-    for(i = 0; i < x->x_max && i < argc; ++i)
-    {
-        if(argv[i].a_type == A_FLOAT)
-        {
-            if(x->x_atoms[i].a_type == A_FLOAT)
-            {
-                x->x_atoms[i].a_w.w_float = argv[i].a_w.w_float;
-            }
-            else
-            {
-                pd_error(x, "pak: wrong type (float)");
-            }
-        }
-        else if(argv[i].a_type == A_POINTER)
-        {
-            if(x->x_atoms[i].a_type == A_POINTER)
-            {
-                gpointer_unset(x->x_atoms[i+1].a_w.w_gpointer);
-                *(x->x_atoms[i+1].a_w.w_gpointer) = *(argv[i].a_w.w_gpointer);
-                if(x->x_atoms[i+1].a_w.w_gpointer->gp_stub)
-                {
-                    x->x_atoms[i+1].a_w.w_gpointer->gp_stub->gs_refcount++;
-                }
-            }
-            else
-            {
-                pd_error(x, "pak: wrong type (pointer)");
-            }
-        }
-        if(argv[i].a_type == A_SYMBOL)
-        {
-            if(x->x_atoms[i].a_type == A_SYMBOL)
-            {
-                x->x_atoms[i].a_w.w_symbol = argv[i].a_w.w_symbol;
-            }
-            else
-            {
-                pd_error(x, "pak: wrong type (symbol)");
-            }
-        }
-    }
+    pak_copy(x->x_owner, x->x_max, x->x_atoms, argc, argv);
     pak_bang(x->x_owner);
 }
 
 static void pak_inlet_anything(t_pak_inlet *x, t_symbol* s, int argc, t_atom* argv)
 {
-    int i;
     if(x->x_atoms[0].a_type == A_SYMBOL)
     {
         x->x_atoms[0].a_w.w_symbol = s;
@@ -256,48 +260,13 @@ static void pak_inlet_anything(t_pak_inlet *x, t_symbol* s, int argc, t_atom* ar
     {
         pd_error(x, "pak: wrong type (symbol)");
     }
-    for(i = 0; i < x->x_max-1 && i < argc; ++i)
-    {
-        if(argv[i].a_type == A_FLOAT)
-        {
-            if(x->x_atoms[i+1].a_type == A_FLOAT)
-            {
-                x->x_atoms[i+1].a_w.w_float = argv[i].a_w.w_float;
-            }
-            else
-            {
-                pd_error(x, "pak: wrong type (float)");
-            }
-        }
-        else if(argv[i].a_type == A_POINTER)
-        {
-            if(x->x_atoms[i+1].a_type == A_POINTER)
-            {
-                gpointer_unset(x->x_atoms[i+1].a_w.w_gpointer);
-                *(x->x_atoms[i+1].a_w.w_gpointer) = *(argv[i].a_w.w_gpointer);
-                if(x->x_atoms[i+1].a_w.w_gpointer->gp_stub)
-                {
-                    x->x_atoms[i+1].a_w.w_gpointer->gp_stub->gs_refcount++;
-                }
-            }
-            else
-            {
-                pd_error(x, "pak: wrong type (pointer)");
-            }
-        }
-        if(argv[i].a_type == A_SYMBOL)
-        {
-            if(x->x_atoms[i+1].a_type == A_SYMBOL)
-            {
-                x->x_atoms[i+1].a_w.w_symbol = argv[i].a_w.w_symbol;
-            }
-            else
-            {
-                pd_error(x, "pak: wrong type (symbol)");
-            }
-        }
-    }
+    pak_copy(x->x_owner, x->x_max-1, x->x_atoms+1, argc, argv);
     pak_bang(x->x_owner);
+}
+
+static void pak_inlet_set(t_pak_inlet *x, t_symbol* s, int argc, t_atom* argv)
+{
+    pak_copy(x->x_owner, x->x_max, x->x_atoms, argc, argv);
 }
 
 
@@ -320,6 +289,7 @@ extern void pak_setup(void)
         class_addsymbol(c,  (t_method)pak_inlet_symbol);
         class_addlist(c,    (t_method)pak_inlet_list);
         class_addanything(c,(t_method)pak_inlet_anything);
+        class_addmethod(c,  (t_method)pak_inlet_set, gensym("set"), A_GIMME, 0);
     }
     pak_inlet_class = c;
     
