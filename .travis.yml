@@ -16,6 +16,7 @@ matrix:
     install:
       - sudo apt-get install -y gcc-multilib
       - sudo apt-get install -y libc6-dev-i386
+      - curl https://raw.githubusercontent.com/pure-data/deken/master/developer/deken > /Users/Pierre/GitHub/PureData/pd-dummy/deken
     script:
       - mkdir build && cd build
       - cmake .. -DCMAKE_C_FLAGS=-m32
@@ -38,9 +39,9 @@ matrix:
       - cmake --build . --config Release
 
 after_success:
-  - curl https://raw.githubusercontent.com/pure-data/deken/master/developer/deken > ~/bin/deken
-  - chmod 755 ~/bin/deken
-  - deken
+  - curl https://raw.githubusercontent.com/pure-data/deken/master/developer/deken > ./deken
+  - chmod 755 ./deken
+  - ./deken
   - cd ../
   - cp LICENSE dummies/license.txt
   - cp README.md dummies/readme.txt
