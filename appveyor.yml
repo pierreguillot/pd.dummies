@@ -1,10 +1,10 @@
 
 environment:
    matrix:
-      - CONFIGURATION: Release
+      - CONFIGURATION: Debug
         PLATFORM: Win32
         ZIP: dummies_win_32
-      - CONFIGURATION: Release
+      - CONFIGURATION: Debug
         PLATFORM: x64
         ZIP: dummies_win_64
 
