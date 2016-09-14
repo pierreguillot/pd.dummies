@@ -17,7 +17,7 @@ build_script:
     - mkdir build
     - cd build
     - cmake .. -G "Visual Studio 14 2015"
-    - cmake --build . -- /verbosity:minimal
+    - cmake --build . -- /verbosity:minimal /p:Configuration=%CONFIGURATION%
 
 after_build:
     - cd ..\
