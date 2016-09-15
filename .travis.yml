@@ -49,7 +49,7 @@ matrix:
       - cmake --build . --config Release
       - cd ../
 
-before_deploy:
+after_script:
   - cp LICENSE dummies/license.txt
   - cp README.md dummies/readme.txt
   - ./deken package -v $TRAVIS_TAG dummies
