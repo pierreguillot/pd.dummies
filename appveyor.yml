@@ -3,7 +3,6 @@ environment:
 platform:
   - x86
   - x64
-
 configuration: Release
 verbosity: minimal
 
