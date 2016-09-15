@@ -1,9 +1,7 @@
 
 configuration: Release
 os: Visual Studio 2015
-platform:
-  - x86
-  - x64
+platform: x86
 
 install:
     - git submodule update --init --recursive
@@ -12,25 +10,29 @@ build_script:
   - mkdir build
   - cd build
   - cmake -h
-  - cmake .. -G "Visual Studio 14 2015 Win64"
+  - cmake .. -G "Visual Studio 14 2015"
   - cmake --build . -- /verbosity:minimal /p:Configuration=Release
   - cd ..\
 
 after_build:
-    - del /F /S /Q /A %APPVEYOR_BUILD_FOLDER%\*.pdb
-    - del /F /S /Q /A %APPVEYOR_BUILD_FOLDER%\*.ilk
-    - copy %APPVEYOR_BUILD_FOLDER%\README.md %APPVEYOR_BUILD_FOLDER%\dummies\readme.txt
-    - copy %APPVEYOR_BUILD_FOLDER%\LICENSE %APPVEYOR_BUILD_FOLDER%\dummies\license.txt
-    - 7z a dummies_win.zip %APPVEYOR_BUILD_FOLDER%\dummies\
+  - del /F /S /Q /A %APPVEYOR_BUILD_FOLDER%\*.pdb
+  - del /F /S /Q /A %APPVEYOR_BUILD_FOLDER%\*.ilk
+  - xcopy %APPVEYOR_BUILD_FOLDER%\src\ %APPVEYOR_BUILD_FOLDER%\dummies\sources\ /i
+  - copy %APPVEYOR_BUILD_FOLDER%\README.md %APPVEYOR_BUILD_FOLDER%\dummies\readme.txt
+  - copy %APPVEYOR_BUILD_FOLDER%\LICENSE %APPVEYOR_BUILD_FOLDER%\dummies\license.txt
+  - 7z a %APPVEYOR_BUILD_FOLDER%\dummies-%APPVEYOR_REPO_COMMIT%-(Windows-i386-32)(Sources)-externals.zip %APPVEYOR_BUILD_FOLDER%\dummies\
 
 artifacts:
   - path: '*.zip'
+
+before_deploy:
+  - xcopy %APPVEYOR_BUILD_FOLDER%\dummies-%APPVEYOR_REPO_COMMIT%-(Windows-i386-32)(Sources)-externals.zip %APPVEYOR_BUILD_FOLDER%\dummies-%APPVEYOR_REPO_TAG_NAME%-(Windows-i386-32)(Sources)-externals.zip
 
 deploy:
   provider: GitHub
   auth_token:
     secure: hFOC0oRou0A7cFLF/0b5hyXE/lXyb1oa2dg6LdSyT5Je70m0DQAJ5cKa4cUbvfWe
-  artifact: /.*\.zip/
+  artifact: %APPVEYOR_BUILD_FOLDER%\dummies-%APPVEYOR_REPO_TAG_NAME%-(Windows-i386-32)(Sources)-externals.zip
   draft: false
   prerelease: false
   on:
