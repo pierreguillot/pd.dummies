@@ -13,12 +13,6 @@ matrix:
 
   - os: linux
     compiler: gcc
-    install:
-      - sudo apt-get install -y gcc-multilib
-      - sudo apt-get install -y libc6-dev-i386
-      - curl https://raw.githubusercontent.com/pure-data/deken/master/developer/deken > ./deken
-      - chmod 755 ./deken
-      - ./deken
     script:
       - mkdir build && cd build
       - cmake .. -DCMAKE_C_FLAGS=-m32
@@ -27,10 +21,6 @@ matrix:
 
   - os: linux
     compiler: gcc
-    install:
-      - curl https://raw.githubusercontent.com/pure-data/deken/master/developer/deken > ./deken
-      - chmod 755 ./deken
-      - ./deken
     script:
       - mkdir build && cd build
       - cmake .. -DCMAKE_C_FLAGS=-m64
@@ -39,15 +29,13 @@ matrix:
 
   - os: osx
     compiler: gcc
-    install:
-      - curl https://raw.githubusercontent.com/pure-data/deken/master/developer/deken > ./deken
-      - chmod 755 ./deken
-      - ./deken
     script:
       - mkdir build && cd build
       - cmake ..
       - cmake --build . --config Release
       - cd ../
+
+install: python ./pd.build/pd.install.py
 
 after_script:
   - cp LICENSE dummies/license.txt
