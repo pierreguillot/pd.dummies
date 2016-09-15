@@ -48,7 +48,7 @@ script:
 after_script:
   - cp LICENSE dummies/license.txt
   - cp README.md dummies/readme.txt
-  - zip -r dummies-$TRAVIS_BRANCH.$TRAVIS_COMMIT-$system-externals.tar.gz dummies
+  - zip -r dummies-$TRAVIS_BRANCH.$TRAVIS_COMMIT-"("$system")"-externals.tar.gz dummies
   - ls
 
 before_deploy:
