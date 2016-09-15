@@ -39,8 +39,11 @@ script:
   - mkdir build
   - cd build
   - cmake .. -DCMAKE_C_FLAGS=$cflags
-  - cmake --build . --config $Release
+  - cmake --build . --config $config
   - cd ..
+  - echo $system
+  - echo $config
+  - echo $cflags
 
 after_script:
   - cp LICENSE dummies/license.txt
