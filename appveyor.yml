@@ -1,6 +1,6 @@
 
 platform:
-  - x86
+  - Win32
   - x64
 
 configuration: Release
@@ -15,9 +15,9 @@ build_script:
     - cmake -h
     - cmake .. -G "Visual Studio 14 2015"
     - cmake --build . -- /verbosity:minimal /p:Configuration=%configuration%
+    - cd ..\
 
 after_build:
-    - cd ..\
     - del /F /S /Q /A %APPVEYOR_BUILD_FOLDER%\*.pdb
     - del /F /S /Q /A %APPVEYOR_BUILD_FOLDER%\*.ilk
     - copy %APPVEYOR_BUILD_FOLDER%\README.md %APPVEYOR_BUILD_FOLDER%\dummies\readme.txt
