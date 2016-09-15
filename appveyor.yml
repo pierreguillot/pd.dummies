@@ -25,7 +25,7 @@ artifacts:
   - path: '*.zip'
 
 before_deploy:
-  - rename %APPVEYOR_BUILD_FOLDER%\dummies-%APPVEYOR_REPO_COMMIT%-(Windows-i386-32)(Sources)-externals.zip %APPVEYOR_BUILD_FOLDER%\dummies-%APPVEYOR_REPO_TAG_NAME%-(Windows-i386-32)(Sources)-externals.zip
+  - rename %APPVEYOR_BUILD_FOLDER%\dummies-%APPVEYOR_REPO_COMMIT%-(Windows-i386-32)(Sources)-externals.zip dummies-%APPVEYOR_REPO_TAG_NAME%-(Windows-i386-32)(Sources)-externals.zip
 
 deploy:
   provider: GitHub
