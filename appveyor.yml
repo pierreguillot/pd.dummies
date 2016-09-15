@@ -17,8 +17,7 @@ build_script:
   - cd ..\
 
 after_build:
-  - curl https://raw.githubusercontent.com/pure-data/deken/master/developer/deken > ./deken
-  - deken
+  - dumpbin /headers %APPVEYOR_BUILD_FOLDER%\dummies\pak.dll
 
 # after_build:
 #    - del /F /S /Q /A %APPVEYOR_BUILD_FOLDER%\*.pdb
