@@ -8,31 +8,32 @@ git:
   submodules: true
   depth: 3
 
-compiler: gcc
-
 matrix:
   include:
 
   - os: linux
+    compiler: gcc
     install:
       - sudo apt-get install -y gcc-multilib
       - sudo apt-get install -y libc6-dev-i386
     env:
-      - extension=Linux-i386-32
-      - cflags=-m32
+      - system=Linux-i386-32
       - config=Release
+      - cflags=-m32
 
   - os: linux
+    compiler: gcc
     env:
-      - extension=Linux-amd64-64
-      - cflags=-m64
+      - system=Linux-amd64-64
       - config=Release
+      - cflags=-m64
 
   - os: osx
+    compiler: gcc
     env:
-      - extension=Darwin-x86_64-32
-      - cflags=""
+      - system=Darwin-x86_64-32
       - config=Release
+      - cflags=""
 
 script:
   - mkdir build
