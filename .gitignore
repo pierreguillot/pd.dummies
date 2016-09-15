@@ -2,4 +2,6 @@ build
 *pd_darwin
 *dll
 *pd_linux
+*tar.gz
+*sha256
 deken

@@ -50,6 +50,10 @@ after_script:
   - cp README.md dummies/readme.txt
   - zip -r dummies-$TRAVIS_BRANCH.$TRAVIS_COMMIT-"("$system")"-externals.tar.gz dummies
   - ls
+  - curl https://raw.githubusercontent.com/pure-data/deken/master/developer/deken > ./deken
+  - chmod 755 ./deken
+  - ./deken
+  - ./deken package v $TRAVIS_BRANCH.$TRAVIS_COMMIT dummies
 
 before_deploy:
   - cp LICENSE dummies/license.txt
