@@ -17,14 +17,11 @@ build_script:
   - cd ..\
 
 after_build:
-  - C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\dumpbin /headers %APPVEYOR_BUILD_FOLDER%\dummies\pak.dll
-
-# after_build:
-#    - del /F /S /Q /A %APPVEYOR_BUILD_FOLDER%\*.pdb
-#    - del /F /S /Q /A %APPVEYOR_BUILD_FOLDER%\*.ilk
-#    - copy %APPVEYOR_BUILD_FOLDER%\README.md %APPVEYOR_BUILD_FOLDER%\dummies\readme.txt
-#    - copy %APPVEYOR_BUILD_FOLDER%\LICENSE %APPVEYOR_BUILD_FOLDER%\dummies\license.txt
-#    - 7z a %ZIP%.zip %APPVEYOR_BUILD_FOLDER%\dummies\
+    - del /F /S /Q /A %APPVEYOR_BUILD_FOLDER%\*.pdb
+    - del /F /S /Q /A %APPVEYOR_BUILD_FOLDER%\*.ilk
+    - copy %APPVEYOR_BUILD_FOLDER%\README.md %APPVEYOR_BUILD_FOLDER%\dummies\readme.txt
+    - copy %APPVEYOR_BUILD_FOLDER%\LICENSE %APPVEYOR_BUILD_FOLDER%\dummies\license.txt
+    - 7z a dummies_win.zip %APPVEYOR_BUILD_FOLDER%\dummies\
 
 artifacts:
   - path: '*.zip'
