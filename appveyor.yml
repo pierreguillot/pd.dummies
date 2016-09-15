@@ -3,10 +3,10 @@ environment:
 platform:
   - x86
   - x64
+
 configuration: Release
 verbosity: minimal
-
-image: Visual Studio 2015
+os: Visual Studio 2015
 
 install:
     - git submodule update --init --recursive
