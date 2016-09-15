@@ -12,6 +12,7 @@ install:
 build_script:
     - mkdir build
     - cd build
+    - cmake -h
     - cmake .. -G "Visual Studio 14 2015"
     - cmake --build . -- /verbosity:minimal /p:Configuration=%configuration%
 
