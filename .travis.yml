@@ -1,6 +1,7 @@
 language: c
 dist: trusty
 sudo: required
+
 notifications:
   email: false
 git:
@@ -15,6 +16,9 @@ matrix:
     install:
       - sudo apt-get install -y gcc-multilib
       - sudo apt-get install -y libc6-dev-i386
+      - curl https://raw.githubusercontent.com/pure-data/deken/master/developer/deken > ./deken
+      - chmod 755 ./deken
+      - ./deken
     script:
       - mkdir build && cd build
       - cmake .. -DCMAKE_C_FLAGS=-m32
@@ -23,6 +27,10 @@ matrix:
 
   - os: linux
     compiler: gcc
+    install:
+      - curl https://raw.githubusercontent.com/pure-data/deken/master/developer/deken > ./deken
+      - chmod 755 ./deken
+      - ./deken
     script:
       - mkdir build && cd build
       - cmake .. -DCMAKE_C_FLAGS=-m64
@@ -31,6 +39,10 @@ matrix:
 
   - os: osx
     compiler: gcc
+    install:
+      - curl https://raw.githubusercontent.com/pure-data/deken/master/developer/deken > ./deken
+      - chmod 755 ./deken
+      - ./deken
     script:
       - mkdir build && cd build
       - cmake ..
@@ -40,9 +52,6 @@ matrix:
 before_deploy:
   - cp LICENSE dummies/license.txt
   - cp README.md dummies/readme.txt
-  - curl https://raw.githubusercontent.com/pure-data/deken/master/developer/deken > ./deken
-  - chmod 755 ./deken
-  - ./deken
   - ./deken package -v $TRAVIS_TAG dummies
 
 deploy:
@@ -51,7 +60,7 @@ deploy:
   api_key:
     secure: OvuuxKFL/kVKsQU7xVJ09PHAAgmlPqCh+GLib/nCfUQKVZ87De0UGoC95mHUHs7C+xkRVEIcL7uZZYhF5bMlIGdqPUjD1aPs2rLKr6aI9U7em7OH/+8eGLKUmIrST3d4/20iaAbSsaOwI5TElYv3w/rDoaIDznXLE0qhXUODajNG6KiXJybq7aUVXw9jfeSeMChBEQkP170qzEaNqJQ6Fu4CVT6jy1F5Bu806AJajvPwNnRTh44P6X/ESxyaohzTPQAPVMov/Qk9FFqf4yslC8up6bqLB//AzMJPgmEhYpOuuy5j0F7+duav5Lh0BWvB/8PDte4EhGzkci9RCZ4wpKHoUZd0BEHkwl39lSuMOCgTVj94zUnNu3Zos5nDxgyuY54RB+qq4bx0yQHpqISFReQqqAV7ZC5Cs65CFUjzSGYMRsKItq3Oqsk9EQO39pziMLFZsnhc/IDEK+cgnOmm1diqQWDknemLCUrcnQRul+7IchQuay1I0Zu26Z1jJ4u0Zf1tOa1vOIPP1iMgOghVrWyRWcanBUjfJTqsykkh+oWyvECnTwmcCUPW/e5hQwAflCC8EKIqy2BSmpEYJm7AfoV9k3qZs36xz9LyTsNcOCxVL+vZWRwyPAMkyVkpJ9Je3tFsMDf2EeyxrQTRTctZlvppzd0ISobObnJ88vPJX/4=
   file:
-    - '*.zip'
+    - dummies_$zip.zip
   on:
     condition: "$CC = gcc"
     tags: true

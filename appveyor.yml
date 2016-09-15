@@ -1,14 +1,13 @@
 
 environment:
-   matrix:
-      - CONFIGURATION: Release
-        PLATFORM: Win32
-        ZIP: dummies_win_32
-      - CONFIGURATION: Release
-        PLATFORM: x64
-        ZIP: dummies_win_64
+platform:
+  - x86
+  - x64
 
-os: Visual Studio 2015
+configuration: Release
+verbosity: minimal
+
+image: Visual Studio 2015
 
 install:
     - git submodule update --init --recursive
@@ -17,7 +16,7 @@ build_script:
     - mkdir build
     - cd build
     - cmake .. -G "Visual Studio 14 2015"
-    - cmake --build . -- /verbosity:minimal /p:Configuration=%CONFIGURATION%
+    - cmake --build . -- /verbosity:%verbosity% /p:Configuration=%configuration%
 
 after_build:
     - cd ..\
