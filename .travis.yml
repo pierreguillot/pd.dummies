@@ -41,9 +41,6 @@ script:
   - cmake .. -DCMAKE_C_FLAGS=$cflags
   - cmake --build . --config $config
   - cd ..
-  - echo $system
-  - echo $config
-  - echo $cflags
 
 after_script:
   - cp LICENSE dummies/license.txt
@@ -53,7 +50,7 @@ after_script:
   - curl https://raw.githubusercontent.com/pure-data/deken/master/developer/deken > ./deken
   - chmod 755 ./deken
   - ./deken
-  - ./deken package v $TRAVIS_BRANCH.$TRAVIS_COMMIT dummies
+  - ./deken package -v $TRAVIS_COMMIT dummies
 
 before_deploy:
   - cp LICENSE dummies/license.txt
