@@ -13,11 +13,11 @@ build_script:
   - cd build
   - cmake -h
   - cmake .. -G "Visual Studio 14 2015"
-  - cmake --build . -- /p:Configuration=Release
+  - cmake --build . -- /verbosity:minimal /p:Configuration=Release
   - cd ..\
 
 after_build:
-  - dumpbin /headers %APPVEYOR_BUILD_FOLDER%\dummies\pak.dll
+  - C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\dumpbin /headers %APPVEYOR_BUILD_FOLDER%\dummies\pak.dll
 
 # after_build:
 #    - del /F /S /Q /A %APPVEYOR_BUILD_FOLDER%\*.pdb
