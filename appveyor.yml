@@ -25,13 +25,13 @@ artifacts:
   - path: '*.zip'
 
 before_deploy:
-  - copy %APPVEYOR_BUILD_FOLDER%\dummies-%APPVEYOR_REPO_COMMIT%-(Windows-i386-32)(Sources)-externals.zip %APPVEYOR_BUILD_FOLDER%\dummies-%APPVEYOR_REPO_TAG_NAME%-(Windows-i386-32)(Sources)-externals.zip
+  - rename %APPVEYOR_BUILD_FOLDER%\dummies-%APPVEYOR_REPO_COMMIT%-(Windows-i386-32)(Sources)-externals.zip %APPVEYOR_BUILD_FOLDER%\dummies-%APPVEYOR_REPO_TAG_NAME%-(Windows-i386-32)(Sources)-externals.zip
 
 deploy:
   provider: GitHub
   auth_token:
     secure: hFOC0oRou0A7cFLF/0b5hyXE/lXyb1oa2dg6LdSyT5Je70m0DQAJ5cKa4cUbvfWe
-  artifact: dummies-%APPVEYOR_REPO_TAG_NAME%-(Windows-i386-32)(Sources)-externals.zip
+  artifact: '*.zip'
   draft: false
   prerelease: false
   on:
