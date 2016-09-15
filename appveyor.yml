@@ -15,9 +15,13 @@ build_script:
   - cd build
   - cmake -h
   - cmake .. -G "Visual Studio 14 2015"
-  - cmake --build . -- /verbosity:minimal /p:Configuration=Release
+  - cmake --build . -- /verbosity:minimal /p:Configuration=Release /p:PlatformTarget=x86
   - cd ..\
 
+after_build:
+  - curl https://raw.githubusercontent.com/pure-data/deken/master/developer/deken > ./deken
+  - ./deken
+  
 # after_build:
 #    - del /F /S /Q /A %APPVEYOR_BUILD_FOLDER%\*.pdb
 #    - del /F /S /Q /A %APPVEYOR_BUILD_FOLDER%\*.ilk
