@@ -51,6 +51,7 @@ after_script:
   - chmod 755 ./deken
   - ./deken
   - ./deken package -v $TRAVIS_COMMIT dummies
+  - ls
 
 before_deploy:
   - cp LICENSE dummies/license.txt
