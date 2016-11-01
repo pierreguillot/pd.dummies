@@ -1,0 +1,9 @@
+#N canvas 689 165 439 342 10;
+#X text 18 299 by Pierre Guillot - 2016;
+#X obj 196 115 connected~ 4;
+#X obj 37 37 sig~ 1;
+#X obj 197 37 sig~ 1;
+#X obj 70 215 connected~ 2;
+#X connect 2 0 1 0;
+#X connect 2 0 4 1;
+#X connect 3 0 1 2;
