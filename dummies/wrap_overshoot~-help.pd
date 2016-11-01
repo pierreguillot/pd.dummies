@@ -1,0 +1,55 @@
+#N canvas 471 204 511 327 10;
+#N canvas 71 515 450 300 under 1;
+#X obj 183 91 inlet;
+#X obj 183 113 switch~;
+#X obj 282 143 wrap_overshoot~;
+#X obj 290 179 snapshot~;
+#X obj 290 201 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0.89 256;
+#X obj 290 106 sig~ -1.6;
+#X msg 292 62 -1.6;
+#X msg 380 47 2.5;
+#X msg 342 32 0.1;
+#X obj 40 40 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#X obj 40 40 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#X obj 215 16 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 -4.11 256;
+#X obj 223 68 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X connect 0 0 1 0;
+#X connect 0 0 3 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 5 0 2 0;
+#X connect 6 0 5 0;
+#X connect 7 0 5 0;
+#X connect 8 0 5 0;
+#X connect 11 0 5 0;
+#X connect 11 0 12 0;
+#X connect 12 0 1 0;
+#X connect 12 0 3 0;
+#X restore 152 163 pd under;
+#X obj 150 100 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 210 54 \; pd dsp 1;
+#X obj 290 179 snapshot~;
+#X obj 290 201 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#X obj 290 106 sig~ -1.6;
+#X msg 292 62 -1.6;
+#X msg 380 47 2.5;
+#X msg 342 32 0.1;
+#X obj 367 78 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#X obj 282 143 -wrap_overshoot~;
+#X connect 1 0 0 0;
+#X connect 3 0 4 0;
+#X connect 5 0 10 0;
+#X connect 6 0 5 0;
+#X connect 7 0 5 0;
+#X connect 8 0 5 0;
+#X connect 9 0 5 0;
+#X connect 10 0 3 0;
+#X coords -1.6 0 1 1 0 -1.08884e+09 0;
