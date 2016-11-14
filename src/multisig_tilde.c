@@ -124,6 +124,7 @@ void multi_dsp(t_multi *x, t_signal **sp)
 
 extern void multisig_tilde_setup(void)
 {
+    post("hi");
     t_class* c = class_new(gensym("multisig~"), (t_newmethod)multi_new, NULL, sizeof(t_multi), CLASS_DEFAULT, 0);
     if(c)
     {
