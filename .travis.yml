@@ -8,9 +8,9 @@ git:
   submodules: true
   depth: 3
 
-global:
-  env: PROJECT='dummies'
-  
+env:
+    global: PROJECT='dummies'
+
 matrix:
   include:
 
