@@ -13,9 +13,7 @@ matrix:
 
   - os: linux
     compiler: gcc
-    install:
-      - sudo apt-get install -y gcc-multilib
-      - sudo apt-get install -y libc6-dev-i386
+    env: PLATFORM='linux32'
     script:
       - mkdir build
       - cd build
@@ -42,6 +40,7 @@ matrix:
 
   - os: linux
     compiler: gcc
+    env: PLATFORM='linux64'
     script:
       - mkdir build
       - cd build
@@ -68,6 +67,7 @@ matrix:
 
   - os: osx
     compiler: gcc
+    env: PLATFORM='macos'
     script:
       - mkdir build
       - cd build
@@ -91,3 +91,5 @@ matrix:
       on:
         tags: true
         repo: pierreguillot/pd-dummy
+
+install: ./pd.build/ci.install.sh
