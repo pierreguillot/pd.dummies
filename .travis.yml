@@ -9,7 +9,7 @@ git:
   depth: 3
 
 env:
-    global: PROJECT='dummies'
+    global: PACKAGE='dummies'
 
 matrix:
   include:
@@ -17,14 +17,6 @@ matrix:
   - os: linux
     compiler: gcc
     env: PLATFORM='linux32'
-    after_success:
-      - cp LICENSE dummies/license.txt
-      - cp README.md dummies/readme.txt
-      - cp -r src/ dummies/sources/
-      - zip -r dummies-$TRAVIS_COMMIT-"("Linux-i386-32")""("Sources")"-externals.zip dummies
-      - ls
-    before_deploy:
-      - mv dummies-$TRAVIS_COMMIT-"("Linux-i386-32")""("Sources")"-externals.zip dummies-$TRAVIS_TAG-"("Linux-i386-32")""("Sources")"-externals.zip
     deploy:
       provider: releases
       skip_cleanup: true
@@ -38,14 +30,6 @@ matrix:
   - os: linux
     compiler: gcc
     env: PLATFORM='linux64'
-    after_success:
-      - cp LICENSE dummies/license.txt
-      - cp README.md dummies/readme.txt
-      - cp -r src/ dummies/sources/
-      - zip -r dummies-$TRAVIS_COMMIT-"("Linux-amd64-64")""("Sources")"-externals.zip dummies
-      - ls
-    before_deploy:
-      - mv dummies-$TRAVIS_COMMIT-"("Linux-amd64-64")""("Sources")"-externals.zip dummies-$TRAVIS_TAG-"("Linux-amd64-64")""("Sources")"-externals.zip
     deploy:
       provider: releases
       skip_cleanup: true
@@ -59,14 +43,6 @@ matrix:
   - os: osx
     compiler: gcc
     env: PLATFORM='macos'
-    after_success:
-      - cp LICENSE dummies/license.txt
-      - cp README.md dummies/readme.txt
-      - cp -r src/ dummies/sources/
-      - zip -r dummies-$TRAVIS_COMMIT-"("Darwin-i386-32")""("Darwin-x86_64-32")""("Sources")"-externals.zip dummies
-      - ls
-    before_deploy:
-      - cp dummies-$TRAVIS_COMMIT-"("Darwin-i386-32")""("Darwin-x86_64-32")""("Sources")"-externals.zip dummies-$TRAVIS_TAG-"("Darwin-i386-32")""("Darwin-x86_64-32")""("Sources")"-externals.zip
     deploy:
       provider: releases
       skip_cleanup: true
@@ -79,3 +55,4 @@ matrix:
 
 install: bash ./pd.build/ci.install.sh
 script: bash ./pd.build/ci.script.sh
+after_success: bash ./pd.build/ci.package.sh
