@@ -55,4 +55,4 @@ matrix:
 
 install: bash ./pd.build/ci.install.sh
 script: bash ./pd.build/ci.script.sh
-after_success: bash ./pd.build/ci.package.sh
+after_success: bash ./pd.build/ci.package.sh LICENSE README.md src/
