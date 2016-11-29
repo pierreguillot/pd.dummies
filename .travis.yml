@@ -8,9 +8,6 @@ git:
   submodules: true
   depth: 3
 
-env:
-    global: PACKAGE='dummies'
-
 matrix:
   include:
 
@@ -18,26 +15,26 @@ matrix:
     compiler: gcc
     env:
       - PLATFORM='linux32'
+      - PACKAGE='dummies'
       - EXTENSION='(Linux-i386-32)(Sources)-externals'
 
   - os: linux
     compiler: gcc
     env:
       - PLATFORM='linux64'
+      - PACKAGE='dummies'
       - EXTENSION='(Linux-amd64-64)(Sources)-externals'
 
   - os: osx
     compiler: gcc
     env:
       - PLATFORM='macos'
+      - PACKAGE='dummies'
       - EXTENSION='(Darwin-i386-32)(Darwin-x86_64-32)(Sources)-externals'
-
 
 install: bash ./pd.build/ci.install.sh
 script: bash ./pd.build/ci.script.sh
-after_success:
-  - bash ./pd.build/ci.package.sh LICENSE README.md src/
-  - echo $EXTENSION
+after_success: bash ./pd.build/ci.package.sh LICENSE README.md src/ dummies/
 deploy:
   provider: releases
   skip_cleanup: true
