@@ -4,9 +4,10 @@ os: Visual Studio 2015
 platform: x86
 
 install:
-    - git submodule update --init --recursive
+  - git submodule update --init --recursive
 
-build_script: %APPVEYOR_BUILD_FOLDER%\pd.build\ci.script.sh
+build_script:
+  - %APPVEYOR_BUILD_FOLDER%\pd.build\ci.script.sh
 
 after_build:
   - del /F /S /Q /A %APPVEYOR_BUILD_FOLDER%\*.pdb
