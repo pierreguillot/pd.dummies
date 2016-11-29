@@ -75,4 +75,4 @@ matrix:
         repo: pierreguillot/pd-dummy
 
 install: bash ./pd.build/ci.install.sh
-install: bash ./pd.build/ci.script.sh
+script: bash ./pd.build/ci.script.sh
