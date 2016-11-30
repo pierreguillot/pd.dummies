@@ -98,7 +98,7 @@ void leeloo_dsp(t_leeloo *x, t_signal **sp)
             vec[2] = (t_int)x->l_vtemp;
             for(i = 0; i < x->l_nios * 2; ++i)
             {
-                vec[i+3] = sp[i]->s_vec;
+                vec[i+3] = (t_int)sp[i]->s_vec;
             }
             dsp_addv(leeloo_perform, (x->l_nios * 2 + 3), vec);
             freebytes(vec, (x->l_nios * 2 + 2) * sizeof(t_int));
