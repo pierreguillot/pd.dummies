@@ -16,22 +16,21 @@ matrix:
     env:
       - PLATFORM='linux32'
       - PACKAGE='dummies-linux-32'
-
   - os: linux
     compiler: gcc
     env:
       - PLATFORM='linux64'
       - PACKAGE='dummies-linux-64'
-
   - os: osx
-    compiler: gcc
+    compiler: clang
     env:
       - PLATFORM='macos'
       - PACKAGE='dummies-macos-universal'
 
 install: bash ./pd.build/ci.install.sh
 script: bash ./pd.build/ci.script.sh
-after_success: bash ./pd.build/ci.package.sh LICENSE README.md src/ dummies/
+after_success: bash ./pd.build/ci.test.sh ./tests/dummies-test.pd
+before_deploy: bash ./pd.build/ci.package.sh LICENSE README.md src/ dummies/
 deploy:
   provider: releases
   skip_cleanup: true
