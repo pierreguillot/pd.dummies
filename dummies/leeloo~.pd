@@ -1,0 +1,42 @@
+#N canvas 587 286 541 246 10;
+#X obj 72 63 sig~ 1;
+#X obj 145 63 sig~ 2;
+#X obj 218 63 sig~ 3;
+#X obj 291 63 sig~ 4;
+#X obj 72 124 leeloo~ 4, f 37;
+#X obj 72 200 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 1 256;
+#X obj 12 114 metro;
+#X obj 12 66 loadbang;
+#X msg 12 88 1;
+#X obj 72 177 snapshot~;
+#X obj 145 200 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 2 256;
+#X obj 145 177 snapshot~;
+#X obj 218 200 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 3 256;
+#X obj 218 177 snapshot~;
+#X obj 291 200 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 4 256;
+#X obj 291 177 snapshot~;
+#X text 12 14 Multipass for signal;
+#X msg 376 129 \; pd dsp 1;
+#X msg 376 169 \; pd dsp 0;
+#X connect 0 0 4 0;
+#X connect 1 0 4 1;
+#X connect 2 0 4 2;
+#X connect 3 0 4 3;
+#X connect 4 0 9 0;
+#X connect 4 1 11 0;
+#X connect 4 2 13 0;
+#X connect 4 3 15 0;
+#X connect 6 0 9 0;
+#X connect 6 0 11 0;
+#X connect 6 0 13 0;
+#X connect 6 0 15 0;
+#X connect 7 0 8 0;
+#X connect 8 0 6 0;
+#X connect 9 0 5 0;
+#X connect 11 0 10 0;
+#X connect 13 0 12 0;
+#X connect 15 0 14 0;
