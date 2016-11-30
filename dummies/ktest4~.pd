@@ -1,8 +1,0 @@
-#N canvas 471 363 387 327 10;
-#X obj 105 63 kgen~ 1;
-#X obj 105 85 kop~ 2;
-#X obj 105 107 kop~ 3;
-#X obj 105 129 kop~ 4;
-#X connect 0 0 1 0;
-#X connect 1 0 2 0;
-#X connect 2 0 3 0;

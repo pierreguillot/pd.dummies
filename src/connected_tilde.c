@@ -12,6 +12,7 @@ typedef struct _connected
 {
     t_object    c_obj;
     t_canvas*   c_cnv;
+    t_outlet*   c_out;
 } t_connected;
 
 static t_class *connected_tilde_class;
@@ -27,44 +28,39 @@ static void *connected_tilde_new(float f)
         {
             signalinlet_new((t_object *)x, 0);
         }
+        x->c_out = outlet_new((t_object *)x, &s_list);
     }
     return x;
 }
 
 static void connected_tilde_dsp(t_connected *x, t_signal **sp)
 {
-    int i;
+    int i, ninlets = obj_ninlets((t_object *)x);
     t_linetraverser t;
     t_outconnect*   oc;
-    char*           st;
-    
-    st = getbytes(sizeof(char) * (size_t)obj_ninlets((t_object *)x));
-    if(st)
+    t_atom*         av = (t_atom *)getbytes(ninlets * sizeof(t_atom));
+    if(av)
     {
+        for(i = 0; i < ninlets; ++i)
+        {
+            SETFLOAT(av+i, 0);
+        }
+        
         linetraverser_start(&t, x->c_cnv);
         while((oc = linetraverser_next(&t)))
         {
             if(t.tr_ob2 == (t_object *)x && obj_issignaloutlet(t.tr_ob, t.tr_outno))
             {
-                st[t.tr_inno] = (char)1;
+                SETFLOAT(av+t.tr_inno, 1);
             }
         }
-        startpost("connections %ld : ", (unsigned int)x);
-        for(i = 0; i < obj_ninlets((t_object *)x); ++i)
-        {
-            postfloat((float)st[i]);
-            poststring(" ");
-        }
-        endpost();
-        freebytes(st, sizeof(char) * (size_t)obj_ninlets((t_object *)x));
+        outlet_list(x->c_out, &s_list, ninlets, av);
+        freebytes(av, ninlets * sizeof(t_atom));
     }
     else
     {
-        pd_error(x, "can't allocate memory for inputs states.");
+        pd_error(x, "can't allocate memory to output the connections states.");
     }
-    
-    
-    
 }
 
 extern void connected_tilde_setup(void)

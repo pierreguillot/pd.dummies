@@ -18,8 +18,6 @@ static void crash_bang(t_object *x)
     sys_ouch();
 }
 
-
-
 extern void crash_setup(void)
 {
     crash_class = class_new(gensym("crash"), (t_newmethod)crash_new, (t_method)NULL, sizeof(t_object), CLASS_DEFAULT, 0);
