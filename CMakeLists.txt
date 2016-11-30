@@ -21,4 +21,3 @@ add_pd_external(rotilt_tilde_project rotilt~ ${PROJECT_SOURCE_DIR}/src/rotilt_ti
 add_pd_external(wrap_overshoot_project wrap_overshoot~ ${PROJECT_SOURCE_DIR}/src/wrap_overshoot_tilde.c)
 add_pd_external(connected_tilde_project connected~ ${PROJECT_SOURCE_DIR}/src/connected_tilde.c)
 add_pd_external(vbap_project vbap ${PROJECT_SOURCE_DIR}/src/vbap.c)
-add_pd_external(pak_deux_project pak2 ${PROJECT_SOURCE_DIR}/src/pak2.c)
