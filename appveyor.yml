@@ -19,7 +19,7 @@ after_build:
   - xcopy %APPVEYOR_BUILD_FOLDER%\src %APPVEYOR_BUILD_FOLDER%\dummies\sources /i
   - copy %APPVEYOR_BUILD_FOLDER%\README.md %APPVEYOR_BUILD_FOLDER%\dummies\readme.txt
   - copy %APPVEYOR_BUILD_FOLDER%\LICENSE %APPVEYOR_BUILD_FOLDER%\dummies\license.txt
-  - 7z a %APPVEYOR_BUILD_FOLDER%\dummies-%APPVEYOR_REPO_TAG_NAME%-(Windows-i386-32)(Sources)-externals.zip %APPVEYOR_BUILD_FOLDER%\dummies\
+  - 7z a %APPVEYOR_BUILD_FOLDER%\dummies-win-32.zip %APPVEYOR_BUILD_FOLDER%\dummies\
 
 artifacts:
   - path: '*.zip'
