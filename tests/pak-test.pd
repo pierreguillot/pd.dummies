@@ -1,4 +1,5 @@
-#N canvas 283 303 602 483 10;
+#N canvas 577 288 602 483 10;
+#X declare -path ../dummies;
 #X obj 68 328 ==;
 #X obj 122 328 ==;
 #X obj 149 328 ==;
@@ -43,6 +44,7 @@
 #X msg 161 251 12 symbol 0 0;
 #X obj 23 296 unpack f s f 0;
 #X obj 23 254 pak 12 s f 0;
+#X obj 291 23 declare -path ../dummies;
 #X connect 0 0 3 0;
 #X connect 1 0 3 0;
 #X connect 2 0 3 0;
