@@ -1,0 +1,18 @@
+#N canvas 587 286 391 185 10;
+#X msg 196 69 \; pd dsp 1;
+#X msg 196 109 \; pd dsp 0;
+#X obj 12 102 unpack f f, f 11;
+#X obj 12 124 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 20 256;
+#X obj 75 124 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 -0.954853 256;
+#X obj 12 59 noise~;
+#X obj 12 80 maxicatch~;
+#X text 10 142 Index;
+#X text 74 142 Value;
+#X text 12 14 Outputs the index of the maximum absolute value of a
+signal and its value.;
+#X connect 2 0 3 0;
+#X connect 2 1 4 0;
+#X connect 5 0 6 0;
+#X connect 6 0 2 0;
