@@ -15,6 +15,7 @@ typedef struct _tabosco
     t_word*     t_buffer;
     int         t_size;
     t_float     t_dummy;
+    t_sample    t_index;
 } t_tabosco;
 
 static t_class *tabosco_tilde_class;
@@ -24,7 +25,8 @@ static void *tabosco_tilde_new(t_symbol* s)
     t_tabosco* x = (t_tabosco *)pd_new(tabosco_tilde_class);
     if(x)
     {
-        x->t_name = s;
+        x->t_name   = s;
+        x->t_index  = 0.f;
         outlet_new((t_object *)x, &s_signal);
     }
     return x;
@@ -36,22 +38,27 @@ t_int *tabosco_perform(t_int *w)
     t_sample*  in   = (t_sample *)(w[2]);
     t_sample*  out  = (t_sample *)(w[3]);
     size_t n        = (size_t)(w[4]);
+    t_sample sr     = (t_sample)(w[5]);
     int size        = x->t_size;
     t_word* buffer  = x->t_buffer;
-    int index;
+    t_sample index  = x->t_index;
+    t_sample freq;
     while(n--)
     {
-        index = (int)(*in++ * size);
-        while(index < 0) {
-            index += size;
+        freq = *in++ / sr;
+        index += freq;
+        if(freq < 0.f && index < 0.f) {
+            index += 1.f;
         }
-        while(index >= size) {
-            index -= size;
+        else if(freq > 0.f && index >= 1.f) {
+            index -= 1.f;
         }
-        *out++ = buffer[index].w_float;
+        
+        *out++ = buffer[(int)(index * (t_sample)size)].w_float;
     }
+    x->t_index = index;
     
-    return (w+5);
+    return (w+6);
 }
 
 
@@ -73,7 +80,11 @@ static void tabosco_tilde_dsp(t_tabosco *x, t_signal **sp)
         pd_error(x, "tabosco~: %s array is empty.", x->t_name->s_name);
         return;
     }
-    dsp_add(tabosco_perform, 4, (t_int)x, (t_int)sp[0]->s_vec, (t_int)sp[1]->s_vec, (t_int)sp[0]->s_n);
+    else
+    {
+        garray_usedindsp(a);
+    }
+    dsp_add(tabosco_perform, 5, (t_int)x, (t_int)sp[0]->s_vec, (t_int)sp[1]->s_vec, (t_int)sp[0]->s_n, (t_int)sp[0]->s_sr);
 }
 
 extern void tabosco_tilde_setup(void)
