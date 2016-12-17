@@ -60,7 +60,7 @@ t_int *maxicatch_perform(t_int *w)
     {
         SETFLOAT(x->m_values, (float)index);
         SETFLOAT(x->m_values+1, (float)val);
-        clock_set(x->m_clock, 0.f);
+        clock_delay(x->m_clock, 0.f);
     }
     
     return (w+4);
