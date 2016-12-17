@@ -17,3 +17,5 @@ add_pd_external(leeloo_tilde_project leeloo~ ${PROJECT_SOURCE_DIR}/src/leeloo_ti
 add_pd_external(connected_tilde_project connected~ ${PROJECT_SOURCE_DIR}/src/connected_tilde.c)
 add_pd_external(tabosco_tilde_project tabosco~ ${PROJECT_SOURCE_DIR}/src/tabosco_tilde.c)
 add_pd_external(maxicatch_tilde_project maxicatch~ ${PROJECT_SOURCE_DIR}/src/maxicatch_tilde.c)
+add_pd_external(meanblock_tilde_project meanblock~ ${PROJECT_SOURCE_DIR}/src/meanblock_tilde.c)
+#add_pd_external(vbaf_project vbaf ${PROJECT_SOURCE_DIR}/src/vbaf.c)
