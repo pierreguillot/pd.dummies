@@ -276,7 +276,7 @@ static void pak_inlet_set(t_pak_inlet *x, t_symbol* s, int argc, t_atom* argv)
 
 
 
-extern void pak_setup(void)
+EXTERN void pak_setup(void)
 {
     t_class* c = NULL;
     

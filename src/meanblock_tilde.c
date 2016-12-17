@@ -147,7 +147,7 @@ void *meanblock_tilde_new(t_floatarg f)
     return x;
 }
 
-extern void meanblock_tilde_setup(void)
+EXTERN void meanblock_tilde_setup(void)
 {
     t_class *c = class_new(gensym("meanblock~"), (t_newmethod)meanblock_tilde_new, (t_method)meanblock_tilde_free,
                            sizeof(t_meanblock_tilde), CLASS_DEFAULT, A_DEFFLOAT, 0);

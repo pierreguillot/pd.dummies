@@ -63,7 +63,7 @@ static void connected_tilde_dsp(t_connected *x, t_signal **sp)
     }
 }
 
-extern void connected_tilde_setup(void)
+EXTERN void connected_tilde_setup(void)
 {
     t_class* c = class_new(gensym("connected~"), (t_newmethod)connected_tilde_new, (t_method)NULL, sizeof(t_connected), CLASS_NOINLET, A_FLOAT, 0);
     if(c)

@@ -72,7 +72,7 @@ static void maxicatch_tilde_dsp(t_maxicatch *x, t_signal **sp)
     dsp_add(maxicatch_perform, 3, (t_int)x, (t_int)sp[0]->s_vec, (t_int)sp[0]->s_n);
 }
 
-extern void maxicatch_tilde_setup(void)
+EXTERN void maxicatch_tilde_setup(void)
 {
     t_class* c = class_new(gensym("maxicatch~"), (t_newmethod)maxicatch_tilde_new, (t_method)NULL, sizeof(t_maxicatch), CLASS_DEFAULT, 0);
     if(c)
