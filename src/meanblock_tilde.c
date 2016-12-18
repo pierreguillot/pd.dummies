@@ -57,6 +57,10 @@ void meanblock_tilde_buffer_alloc(t_meanblock_tilde *x, t_int nrows, t_int ncols
     }
 }
 
+// For each sample index, computes the average of the samples over a defined number of block.
+// For example, for the index i and a number of blocks n, the result of the output vector
+// will output[i] = (current[i] + previous[0][i] + previous[1][i] + ... + previous[n-1][i])/n
+// See this discussion: http://forum.pdpatchrepo.info/topic/10466/matrices-and-reallocating-memory
 t_int *meanblock_tilde_perform(t_int *w)
 {
     t_int           i, j;
