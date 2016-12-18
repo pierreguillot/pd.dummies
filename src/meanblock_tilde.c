@@ -19,6 +19,8 @@ typedef struct _meanblock_tilde
     t_float     t_dummy;
 } t_meanblock_tilde;
 
+// Checks if the memory for the buffer has been allocated and frees it if need.
+// The method can also be called internally by the object and not only be Pd itself.
 void meanblock_tilde_free(t_meanblock_tilde *x)
 {
     if(x->t_buffer)
@@ -30,11 +32,14 @@ void meanblock_tilde_free(t_meanblock_tilde *x)
     x->t_buffer_ncols = 0;
 }
 
-void meanblock_tilde_buffer_alloc(t_meanblock_tilde *x, t_int nrows, t_int ncols)
+// Allocates or reallocates the memory for the buffer.
+void meanblock_tilde_buffer_alloc(t_meanblock_tilde *x, t_int nrows, t_int ncols, char dspmethod)
 {
     t_int i;
     if(nrows && ncols)
     {
+        // Instead of using realloc or resizebytes, we free and allocate the memory thus the
+        // code is simpler and we avoid a lot of conditions.
         meanblock_tilde_free(x);
         x->t_buffer = (t_sample*)getbytes(nrows * ncols * sizeof(t_sample));
         if(x->t_buffer)
@@ -48,11 +53,25 @@ void meanblock_tilde_buffer_alloc(t_meanblock_tilde *x, t_int nrows, t_int ncols
         }
         else
         {
+            // If the allocation failded and DSP is running, Pd has to update the dsp and
+            // recall our dsp method we can't perform anymore. But if the method has been
+            // called within our dsp method it can create a loop so we have to check this.
+            if(!dspmethod)
+            {
+                canvas_update_dsp();
+            }
             pd_error(x, "meanblock~ can't allocate memory.");
         }
     }
     else
     {
+        // If the allocation failded and DSP is running, Pd has to update the dsp and
+        // recall our dsp method we can't perform anymore. But if the method has been
+        // called within our dsp method it can create a loop so we have to check this.
+        if(!dspmethod)
+        {
+            canvas_update_dsp();
+        }
         pd_error(x, "meanblock~ the numbers of rows and columns are negatives or null.");
     }
 }
@@ -122,17 +141,30 @@ t_int *meanblock_tilde_perform(t_int *w)
 
 void meanblock_tilde_dsp(t_meanblock_tilde *x, t_signal **sp)
 {
-    meanblock_tilde_buffer_alloc(x,  x->t_buffer_nrows, (t_int)sp[0]->s_n);
-    dsp_add(meanblock_tilde_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
+    // Resize the matrix to fit the current number of samples per blocks
+    meanblock_tilde_buffer_alloc(x, x->t_buffer_nrows, (t_int)sp[0]->s_n, 1);
+    // If the buffer isn't allocated or the number of number of rows or the number of columns
+    // are null, we can't perform.
+    if(x->t_buffer || x->t_buffer_nrows || x->t_buffer_ncols)
+    {
+        dsp_add(meanblock_tilde_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
+    }
 }
 
 void meanblock_tilde_length(t_meanblock_tilde *x, t_floatarg f)
 {
     if(f > 0)
     {
+        // If the number of column is null, it means that the dsp method hasn't been called
+        // yet, so we only need to save the number of rows. Otherwise, we reallocate the
+        // memory with the right number of rows.
         if(x->t_buffer_ncols)
         {
-            meanblock_tilde_buffer_alloc(x, (t_int)f, x->t_buffer_ncols);
+            meanblock_tilde_buffer_alloc(x, (t_int)f, x->t_buffer_ncols, 0);
+        }
+        else
+        {
+            x->t_buffer_nrows = (t_int)f;
         }
     }
     else
