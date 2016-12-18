@@ -59,40 +59,55 @@ void meanblock_tilde_buffer_alloc(t_meanblock_tilde *x, t_int nrows, t_int ncols
 
 t_int *meanblock_tilde_perform(t_int *w)
 {
-    t_meanblock_tilde *x      = (t_meanblock_tilde *)(w[1]);
+    t_int           i, j;
+    t_sample*       cout;
+    t_meanblock_tilde *x    = (t_meanblock_tilde *)(w[1]);
     t_sample        *in     = (t_sample *)(w[2]);
     t_sample        *out    = (t_sample *)(w[3]);
     t_int           n       = (t_int)(w[4]);
-    t_int           nrows   = x->t_buffer_nrows;
-    t_int           crow    = x->t_crow;
     
+    // The t_buffer member of the object is used to store the input samples. This is a vector
+    // in a C matrix form (number of rows * number of columns) so to access the cell at the
+    // column i and the row j, like matrix[i][j], you need to compute the position of the cell
+    // in a single dimension vector, like vector[i * number of columns + j].
+    t_sample* read  = x->t_buffer;      // The pointer is used to read the value.
+    t_int     nrows = x->t_buffer_nrows;// The number of rows (aka the length).
+    t_int     ncols = n;                // The number of columns (aka number of samples).
     
-    t_sample* cout = out;
-    t_sample* read = x->t_buffer;
-    t_sample* write = read + crow * n;
-    t_int           i, j;
+    // At each new DSP tick, the oldest raw of the matrix is erased and replaced with the
+    // samples values of the current input.
+    t_int     crow  = x->t_crow;           // The row that will be overridden
+    t_sample* write = read + crow * ncols; // The pointer is used to write the value.
     
+    // Records the inputs samples in the row of the matrix
+    // and clears the output vector
+    cout = out;
     for(i = 0; i < n; ++i)
     {
         *write++ = *in++;
         *cout++ = 0.f;
     }
     
+    // For each row i of the matrix, adds to the index j of the output vector
+    // the value of the column j, like output[j] += matrix[i][j]
     for(i = 0; i < nrows; ++i)
     {
         cout = out;
         for(j = 0; j < n; ++j)
         {
-            *cout++ = *read++;
+            *cout++ += *read++;
         }
     }
     
+    // Divides the output vector by the number of rows
     cout = out;
     for(i = 0; i < n; ++i)
     {
         *cout++ /= (t_sample)nrows;
     }
     
+    // Increments the next row that will be overriden and if the index is superior or equal
+    // to the number of row, go back to zero.
     x->t_crow++;
     if(x->t_crow >= nrows)
     {
@@ -111,10 +126,9 @@ void meanblock_tilde_length(t_meanblock_tilde *x, t_floatarg f)
 {
     if(f > 0)
     {
-        x->t_buffer_nrows = (t_int)f;
         if(x->t_buffer_ncols)
         {
-            meanblock_tilde_buffer_alloc(x, x->t_buffer_nrows, x->t_buffer_ncols);
+            meanblock_tilde_buffer_alloc(x, (t_int)f, x->t_buffer_ncols);
         }
     }
     else
