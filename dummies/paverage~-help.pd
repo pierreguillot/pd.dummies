@@ -1,10 +1,9 @@
-#N canvas 237 270 500 421 10;
+#N canvas 587 286 537 310 10;
 #X msg 408 88 \; pd dsp 1;
 #X msg 408 128 \; pd dsp 0;
 #X obj 15 174 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -262144 -1 -1 1 256;
 #X obj 15 54 sig~ 1;
-#X obj 15 110 meanblock~ 3;
 #N canvas 256 396 314 149 snapter 0;
 #X obj 57 95 snapshot~;
 #X obj 98 6 bang~;
@@ -24,20 +23,17 @@
 #X connect 5 0 2 1;
 #X connect 6 0 0 0;
 #X restore 15 152 pd snapter;
-#X obj 95 174 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 1e-15 256;
+#X obj 95 214 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 9.99999e-18 256;
 #X obj 175 76 *~ 5;
 #X obj 275 174 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 -0.15288 256;
+-262144 -1 -1 0.0761511 256;
 #X obj 275 54 noise~;
-#X msg 318 76 length \$1;
 #X obj 318 54 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -262144 -1 -1 0 256;
-#X obj 95 110 meanblock~ 1;
-#X obj 175 110 meanblock~ 5;
 #X obj 175 131 -~;
 #X obj 175 174 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 7.15256e-06 256;
+-262144 -1 -1 1.57356e-05 256;
 #N canvas 256 396 314 149 snapter 0;
 #X obj 98 6 bang~;
 #X obj 98 28 f 0;
@@ -95,10 +91,13 @@
 #X connect 5 0 2 1;
 #X connect 6 0 0 0;
 #X restore 275 152 pd snapter;
-#X obj 275 110 meanblock~ 20;
 #X obj 175 54 phasor~ 689.062;
+#X obj 15 110 paverage~ 3;
+#X obj 95 110 paverage~ 1;
+#X obj 175 110 paverage~ 5;
+#X obj 275 110 paverage~ 20;
 #X obj 169 274 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 1 256;
+-262144 -1 -1 0.999999 256;
 #N canvas 256 396 314 149 snapter 0;
 #X obj 57 95 snapshot~;
 #X obj 98 6 bang~;
@@ -118,50 +117,24 @@
 #X connect 5 0 2 1;
 #X connect 6 0 0 0;
 #X restore 169 212 pd snapter;
-#X obj 99 294 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 1e-10 256;
-#N canvas 256 396 314 149 snapter 0;
-#X obj 57 95 snapshot~;
-#X obj 98 6 bang~;
-#X obj 98 28 f 0;
-#X obj 129 28 + 1;
-#X obj 98 50 sel 5;
-#X obj 98 72 f 0;
-#X obj 57 16 inlet~;
-#X obj 57 117 outlet;
-#X connect 0 0 7 0;
-#X connect 1 0 2 0;
-#X connect 2 0 3 0;
-#X connect 2 0 4 0;
-#X connect 3 0 2 1;
-#X connect 4 0 5 0;
-#X connect 4 0 0 0;
-#X connect 5 0 2 1;
-#X connect 6 0 0 0;
-#X restore 99 232 pd snapter;
-#X obj 87 213 *~ 100000;
-#X obj 90 54 sig~ 1e-15;
-#X obj 157 193 *~ 1e+15;
-#X connect 3 0 4 0;
-#X connect 4 0 5 0;
-#X connect 5 0 2 0;
-#X connect 7 0 13 0;
-#X connect 7 0 14 1;
+#X obj 95 54 sig~ 1e-17;
+#X obj 169 191 *~ 1e+17;
+#X connect 3 0 16 0;
+#X connect 4 0 2 0;
+#X connect 6 0 10 1;
+#X connect 6 0 18 0;
+#X connect 8 0 19 0;
 #X connect 9 0 19 0;
-#X connect 10 0 19 0;
-#X connect 11 0 10 0;
-#X connect 12 0 17 0;
-#X connect 12 0 27 0;
-#X connect 13 0 14 0;
-#X connect 14 0 16 0;
-#X connect 16 0 15 0;
-#X connect 17 0 6 0;
-#X connect 18 0 8 0;
-#X connect 19 0 18 0;
-#X connect 20 0 7 0;
-#X connect 22 0 21 0;
-#X connect 24 0 23 0;
-#X connect 25 0 24 0;
-#X connect 26 0 12 0;
-#X connect 26 0 25 0;
-#X connect 27 0 22 0;
+#X connect 10 0 12 0;
+#X connect 12 0 11 0;
+#X connect 13 0 5 0;
+#X connect 14 0 7 0;
+#X connect 15 0 6 0;
+#X connect 16 0 4 0;
+#X connect 17 0 13 0;
+#X connect 17 0 23 0;
+#X connect 18 0 10 0;
+#X connect 19 0 14 0;
+#X connect 21 0 20 0;
+#X connect 22 0 17 0;
+#X connect 23 0 21 0;

@@ -14,8 +14,8 @@ typedef struct _meanblock_tilde
     
     t_sample*   t_buffer;
     t_int       t_buffer_nrows;
-    t_int       t_buffer_ncols;
     t_int       t_crow;
+    t_int       t_buffer_ncols;
     t_float     t_dummy;
 } t_meanblock_tilde;
 
@@ -139,6 +139,63 @@ t_int *meanblock_tilde_perform(t_int *w)
     return (w + 5);
 }
 
+// Optimized version of the perform method
+t_int *meanblock_tilde_perform_optimized(t_int *w)
+{
+    t_int           i;
+    t_meanblock_tilde *x    = (t_meanblock_tilde *)(w[1]);
+    t_sample const    *in   = (t_sample const *)(w[2]);
+    t_sample          *out  = (t_sample *)(w[3]);
+    t_sample          *cout = out;
+    t_int              n    = (t_int)(w[4]);
+    t_int const        ncols= n;
+    
+    t_sample const* read = x->t_buffer;
+    t_int const nrows    = x->t_buffer_nrows;
+    t_sample* write      = x->t_buffer + x->t_crow * ncols;
+    
+    t_sample const div = (t_sample)nrows;
+    for(; n; n -= 8, in += 8, write += 8)
+    {
+        const t_sample f0 = in[0], f1 = in[1], f2 = in[2], f3 = in[3];
+        const t_sample f4 = in[4], f5 = in[5], f6 = in[6], f7 = in[7];
+        
+        write[0] = f0 / div; write[1] = f1 / div; write[2] = f2 / div; write[3] = f3 / div;
+        write[4] = f4 / div; write[5] = f5 / div; write[6] = f6 / div; write[7] = f7 / div;
+    }
+    
+    n = ncols;
+    for(; n; n -= 8, read += 8, cout += 8)
+    {
+        const t_sample f0 = read[0], f1 = read[1], f2 = read[2], f3 = read[3];
+        const t_sample f4 = read[4], f5 = read[5], f6 = read[6], f7 = read[7];
+        
+        cout[0] = f0; cout[1] = f1; cout[2] = f2; cout[3] = f3;
+        cout[4] = f4; cout[5] = f5; cout[6] = f6; cout[7] = f7;
+    }
+    
+    for(i = 1; i < nrows; ++i)
+    {
+        cout = out;
+        n = ncols;
+        for(; n; n -= 8, read += 8, cout += 8)
+        {
+            const t_sample f0 = read[0], f1 = read[1], f2 = read[2], f3 = read[3];
+            const t_sample f4 = read[4], f5 = read[5], f6 = read[6], f7 = read[7];
+            
+            cout[0] += f0; cout[1] += f1; cout[2] += f2; cout[3] += f3;
+            cout[4] += f4; cout[5] += f5; cout[6] += f6; cout[7] += f7;
+        }
+    }
+    
+    x->t_crow++;
+    if(x->t_crow >= nrows)
+    {
+        x->t_crow = 0;
+    }
+    return (w + 5);
+}
+
 void meanblock_tilde_dsp(t_meanblock_tilde *x, t_signal **sp)
 {
     // Resize the matrix to fit the current number of samples per blocks
@@ -147,7 +204,14 @@ void meanblock_tilde_dsp(t_meanblock_tilde *x, t_signal **sp)
     // are null, we can't perform.
     if(x->t_buffer || x->t_buffer_nrows || x->t_buffer_ncols)
     {
-        dsp_add(meanblock_tilde_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
+        if(sp[0]->s_n&7)
+        {
+            dsp_add(meanblock_tilde_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
+        }
+        else
+        {
+            dsp_add(meanblock_tilde_perform_optimized, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
+        }
     }
 }
 
