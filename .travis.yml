@@ -39,7 +39,9 @@ matrix:
       - cmake .. -GXcode
       - cmake --build . --config Release
 
-before_deploy: zip -r $Release.zip LICENSE README.md src/ dummies/
+before_deploy:
+  - cd $TRAVIS_BUILD_DIR
+  - zip -r $Release.zip LICENSE README.md src/ dummies/
 deploy:
   provider: releases
   skip_cleanup: true
