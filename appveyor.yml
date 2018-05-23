@@ -1,7 +1,13 @@
-
-configuration: Release
 os: Visual Studio 2015
-platform: x86
+
+environment:
+  matrix:
+  - platform: x86
+    compiler: "Visual Studio 14 2015"
+    configuration: Release
+  - platform: x64
+    compiler: "Visual Studio 14 2015 Win64"
+    configuration: Release
 
 install:
     - git submodule update --init --recursive
@@ -9,7 +15,7 @@ install:
 build_script:
   - mkdir build
   - cd build
-  - cmake .. -G "Visual Studio 14 2015"
+  - cmake .. -G "%compiler%"
   - cmake --build . -- /verbosity:minimal /p:Configuration=Release
   - cd ..\
 
@@ -19,7 +25,7 @@ after_build:
   - xcopy %APPVEYOR_BUILD_FOLDER%\src %APPVEYOR_BUILD_FOLDER%\dummies\sources /i
   - copy %APPVEYOR_BUILD_FOLDER%\README.md %APPVEYOR_BUILD_FOLDER%\dummies\readme.txt
   - copy %APPVEYOR_BUILD_FOLDER%\LICENSE %APPVEYOR_BUILD_FOLDER%\dummies\license.txt
-  - 7z a %APPVEYOR_BUILD_FOLDER%\dummies-win-32.zip %APPVEYOR_BUILD_FOLDER%\dummies\
+  - 7z a %APPVEYOR_BUILD_FOLDER%\dummies-win-%platform%.zip %APPVEYOR_BUILD_FOLDER%\dummies\
 
 artifacts:
   - path: '*.zip'
