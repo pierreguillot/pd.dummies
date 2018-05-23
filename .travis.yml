@@ -31,7 +31,7 @@ matrix:
     env: release_file='dummies-macos-universal'
     script:
       - mkdir build && cd build
-      - cmake .. -GXcode
+      - cmake ..
       - cmake --build . --config Release
 
 before_deploy:
