@@ -14,26 +14,29 @@ matrix:
   - os: linux
     compiler: gcc
     env:
-      - PLATFORM='linux32'
-      - PACKAGE='dummies-linux-32'
+      - Release='dummies-linux-32'
     install:
       - sudo apt-get install -y gcc-multilib
       - sudo apt-get install -y libc6-dev-i386
+    script:
+      - cmake .. -DCMAKE_C_FLAGS=-m32
+      - cmake --build . --config Release
   - os: linux
     compiler: gcc
     env:
-      - PLATFORM='linux64'
-      - PACKAGE='dummies-linux-64'
+      - Release='dummies-linux-64'
+    script:
+      - cmake .. -DCMAKE_C_FLAGS=-m64
+      - cmake --build . --config Release
   - os: osx
     compiler: clang
     env:
-      - PLATFORM='macos'
-      - PACKAGE='dummies-macos-universal'
+      - Release='dummies-macos-universal'
+    script:
+      - cmake .. -GXcode
+      - cmake --build . --config Release
 
-
-script: bash ./pd.build/ci.script.sh
-#after_success: bash ./pd.build/ci.test.sh ./tests/dummies-test.pd
-before_deploy: bash ./pd.build/ci.package.sh LICENSE README.md src/ dummies/
+before_deploy: zip -r $Release.zip LICENSE README.md src/ dummies/
 deploy:
   provider: releases
   skip_cleanup: true
