@@ -7,7 +7,7 @@
   </p>
   <p align="center">
     <a href="https://travis-ci.org/pierreguillot/pd.dummies"><img src="https://img.shields.io/travis/pierreguillot/pd.dummies.svg?label=travis" alt="Travis CI"></a>
-    <a href="https://ci.appveyor.com/project/pierreguillot/pd.dummies/history"><img src="https://img.shields.io/appveyor/ci/pierreguillot/pd-dummies.svg?label=appveyor" alt="Appveyor CI"></a>
+    <a href="https://ci.appveyor.com/project/pierreguillot/pd-dummies/history"><img src="https://img.shields.io/appveyor/ci/pierreguillot/pd-dummies.svg?label=appveyor" alt="Appveyor CI"></a>
   </p>
 </p>
 
