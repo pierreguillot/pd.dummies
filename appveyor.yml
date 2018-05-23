@@ -10,14 +10,12 @@ environment:
     configuration: Release
 
 install:
-    - git submodule update --init --recursive
+  - git submodule update --init --recursive
 
 build_script:
-  - mkdir build
-  - cd build
+  - mkdir build && cd build
   - cmake .. -G "%compiler%"
   - cmake --build . -- /verbosity:minimal /p:Configuration=Release
-  - cd ..\
 
 after_build:
   - del /F /S /Q /A %APPVEYOR_BUILD_FOLDER%\*.pdb
