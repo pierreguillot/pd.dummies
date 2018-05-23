@@ -41,7 +41,9 @@ matrix:
 
 before_deploy:
   - cd $TRAVIS_BUILD_DIR
-  - zip -r $Release.zip LICENSE README.md src/ dummies/
+  - cp LICENSE dummies/LICENSE.txt
+  - cp README.md dummies/README.md
+  - zip -r $Release.zip dummies
 deploy:
   provider: releases
   skip_cleanup: true
