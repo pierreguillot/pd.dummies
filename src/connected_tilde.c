@@ -45,7 +45,7 @@ static void connected_tilde_dsp(t_connected *x, t_signal **sp)
         {
             SETFLOAT(av+i, 0);
         }
-        
+
         linetraverser_start(&t, x->c_cnv);
         while((oc = linetraverser_next(&t)))
         {
@@ -63,7 +63,7 @@ static void connected_tilde_dsp(t_connected *x, t_signal **sp)
     }
 }
 
-EXTERN void connected_tilde_setup(void)
+void connected_tilde_setup(void)
 {
     t_class* c = class_new(gensym("connected~"), (t_newmethod)connected_tilde_new, (t_method)NULL, sizeof(t_connected), CLASS_NOINLET, A_FLOAT, 0);
     if(c)

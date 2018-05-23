@@ -115,7 +115,7 @@ void leeloo_dsp(t_leeloo *x, t_signal **sp)
     
 }
 
-EXTERN void leeloo_tilde_setup(void)
+void leeloo_tilde_setup(void)
 {
     t_class* c = class_new(gensym("leeloo~"), (t_newmethod)leeloo_new, NULL, sizeof(t_leeloo), CLASS_DEFAULT, A_DEFFLOAT, 0);
     if(c)

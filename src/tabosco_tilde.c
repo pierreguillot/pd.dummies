@@ -87,7 +87,7 @@ static void tabosco_tilde_dsp(t_tabosco *x, t_signal **sp)
     dsp_add(tabosco_perform, 5, (t_int)x, (t_int)sp[0]->s_vec, (t_int)sp[1]->s_vec, (t_int)sp[0]->s_n, (t_int)sp[0]->s_sr);
 }
 
-EXTERN void tabosco_tilde_setup(void)
+void tabosco_tilde_setup(void)
 {
     t_class* c = class_new(gensym("tabosco~"), (t_newmethod)tabosco_tilde_new, (t_method)NULL, sizeof(t_tabosco), CLASS_DEFAULT, A_SYMBOL, 0);
     if(c)
