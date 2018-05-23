@@ -18,9 +18,12 @@ typedef struct _average_tilde {
 
 void average_tilde_free (t_average_tilde *x)
 {
+    t_int i;
     // Deallocate rows
-    for (int i = 0; i < x->len_avg; ++i)
+    for (i = 0; i < x->len_avg; ++i)
+    {
         free(x->matrix[i]);
+    }
     // Deallocate columns
     free(x->matrix);
     // Deallocate avg
@@ -40,14 +43,15 @@ void average_tilde_free (t_average_tilde *x)
 
 t_int *average_tilde_perform(t_int *w)
 {
+    t_int n;
     t_average_tilde	*x = (t_average_tilde *)(w[1]);
     t_sample		*in = (t_sample *)(w[2]);
     t_sample		*out = (t_sample *)(w[3]);
     
     t_sample val;
     
-    for (int n = 0; n < x->block_size; n++) {
-        
+    for (n = 0; n < x->block_size; n++)
+    {
         x->avg[n] -= x->matrix[x->row][n];	// Subtract the old value from average
         val = in[n] / x->len_avg;			// New value = in[n] / len_avg
         x->avg[n] += val;					// Add the new value to average
@@ -102,7 +106,8 @@ t_int *average_tilde_perform_optimized(t_int *w)
     return (w + 5);
 }
 
-t_sample **reallocate_matrix(t_average_tilde *x, t_int len_avg_new) {
+t_sample **reallocate_matrix(t_average_tilde *x, t_int len_avg_new)
+{
     t_int i, j;
     
     t_sample **temp_matrix = NULL;
@@ -110,23 +115,32 @@ t_sample **reallocate_matrix(t_average_tilde *x, t_int len_avg_new) {
     // Allocate the rows
     temp_matrix = realloc(temp_matrix, len_avg_new * sizeof(t_sample*));
     
-    if (temp_matrix) {
+    if (temp_matrix)
+    {
         // The new column's pointer must be initialised to NULL
         for (i = 0; i < len_avg_new; i++)
+        {
             temp_matrix[i] = NULL;
+        }
         
         // Allocate the columns of each row
-        for (i = 0; i < len_avg_new; i++) {
+        for (i = 0; i < len_avg_new; i++)
+        {
             temp_matrix[i] = realloc(temp_matrix[i], x->block_size * sizeof(t_sample));
             
-            if (temp_matrix[i]) {
+            if (temp_matrix[i])
+            {
                 // Initialize the element(s)
                 for (j = 0; j < x->block_size; j++)
+                {
                     temp_matrix[i][j] = 0.0;
+                }
             }
             else {
                 for (j = 0; j < i; j++)
+                {
                     free(temp_matrix[j]);
+                }
                 free(temp_matrix);
                 temp_matrix = NULL;
                 break;
@@ -158,7 +172,7 @@ t_sample *reallocate_avg(t_average_tilde *x, t_int len_avg_new) {
 
 void resize_avg_array(t_average_tilde *x, t_int len_avg_new, t_int initialized)
 {
-    int i,j;
+    t_int i;
     
     t_sample **temp_matrix = NULL;
     t_sample *temp_avg = NULL;
@@ -178,7 +192,9 @@ void resize_avg_array(t_average_tilde *x, t_int len_avg_new, t_int initialized)
         for (i = 0; i < x->len_avg; ++i)
         {
             if (initialized)
+            {
                 free(x->matrix[i]);
+            }
         }
         // Deallocate rows
         free(x->matrix);
@@ -199,7 +215,9 @@ void resize_avg_array(t_average_tilde *x, t_int len_avg_new, t_int initialized)
             for (i = 0; i < len_avg_new; i++)
             {
                 if (initialized)
+                {
                     free(temp_matrix[i]);
+                }
             }
             free(temp_matrix);
             temp_matrix = NULL;
@@ -211,7 +229,8 @@ void resize_avg_array(t_average_tilde *x, t_int len_avg_new, t_int initialized)
 
 void average_tilde_dsp(t_average_tilde *x, t_signal **sp)
 {
-    if (x->block_size != sp[0]->s_n) {
+    if (x->block_size != sp[0]->s_n)
+    {
         x->block_size = sp[0]->s_n;
         resize_avg_array(x, 10, 1);
     }
