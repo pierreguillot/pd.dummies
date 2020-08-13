@@ -27,7 +27,7 @@ static void *tabosco_tilde_new(t_symbol* s)
     {
         x->t_name   = s;
         x->t_index  = 0.f;
-        outlet_new((t_object *)x, &s_signal);
+        outlet_new((t_object *)x, gensym("signal"));
     }
     return x;
 }

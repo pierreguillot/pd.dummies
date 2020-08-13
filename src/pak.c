@@ -66,7 +66,7 @@ static void *pak_new(t_symbol *s, int argc, t_atom *argv)
             if(c == 's')
             {
                 x->x_vec[i].a_type       = A_SYMBOL;
-                x->x_vec[i].a_w.w_symbol = &s_symbol;
+                x->x_vec[i].a_w.w_symbol = gensym("symbol");
                 x->x_ins[i].x_pd    = pak_inlet_class;
                 x->x_ins[i].x_atoms = x->x_vec+i;
                 x->x_ins[i].x_max   = x->x_n-i;
@@ -100,7 +100,7 @@ static void *pak_new(t_symbol *s, int argc, t_atom *argv)
             }
         }
     }
-    outlet_new(&x->x_obj, &s_list);
+    outlet_new(&x->x_obj, gensym("list"));
     return (x);
 }
 
@@ -119,7 +119,7 @@ static void pak_bang(t_pak *x)
         }
         x->x_out[i] = x->x_vec[i];
     }
-    outlet_list(x->x_obj.ob_outlet, &s_list, x->x_n, x->x_out);
+    outlet_list(x->x_obj.ob_outlet, gensym("list"), x->x_n, x->x_out);
 }
 
 static void pak_copy(t_pak *x, int ndest, t_atom* dest, int nsrc, t_atom* src)

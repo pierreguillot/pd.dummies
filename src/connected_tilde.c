@@ -28,7 +28,7 @@ static void *connected_tilde_new(float f)
         {
             signalinlet_new((t_object *)x, 0);
         }
-        x->c_out = outlet_new((t_object *)x, &s_list);
+        x->c_out = outlet_new((t_object *)x, gensym("list"));
     }
     return x;
 }
@@ -54,7 +54,7 @@ static void connected_tilde_dsp(t_connected *x, t_signal **sp)
                 SETFLOAT(av+t.tr_inno, 1);
             }
         }
-        outlet_list(x->c_out, &s_list, ninlets, av);
+        outlet_list(x->c_out, gensym("list"), ninlets, av);
         freebytes(av, ninlets * sizeof(t_atom));
     }
     else

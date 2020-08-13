@@ -256,7 +256,7 @@ void *meanblock_tilde_new(t_floatarg f)
             pd_error(x, "meanblock~ please give me a positive length.");
         }
         x->t_crow     = 0;
-        outlet_new(&x->x_obj, &s_signal);
+        outlet_new(&x->x_obj, gensym("signal"));
     }
     return x;
 }

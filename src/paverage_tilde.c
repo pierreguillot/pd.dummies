@@ -264,7 +264,7 @@ void *average_tilde_new(t_floatarg f)
         x->len_avg    = 0;
         x->block_size = 0;
         x->row        = 0;
-        outlet_new(&x->x_obj, &s_signal);
+        outlet_new(&x->x_obj, gensym("signal"));
         resize_avg_array(x, f > 0.f ? (int)f : 10, sys_getblksize());
     }
     

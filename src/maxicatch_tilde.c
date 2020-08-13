@@ -23,7 +23,7 @@ static t_class *maxicatch_tilde_class;
 
 static void maxicatch_tilde_tick(t_maxicatch *x)
 {
-    outlet_list(x->m_outlet, &s_list, 2, x->m_values);
+    outlet_list(x->m_outlet, gensym("list"), 2, x->m_values);
 }
 
 static void *maxicatch_tilde_new()
@@ -32,7 +32,7 @@ static void *maxicatch_tilde_new()
     if(x)
     {
         x->m_clock = clock_new(x, (t_method)maxicatch_tilde_tick);
-        x->m_outlet= outlet_new((t_object *)x, &s_list);
+        x->m_outlet= outlet_new((t_object *)x, gensym("list"));
     }
     return x;
 }

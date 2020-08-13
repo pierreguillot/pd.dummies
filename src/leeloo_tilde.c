@@ -27,9 +27,9 @@ static void *leeloo_new(t_float f)
         for(i = 1; i < x->l_nios; ++i)
         {
             signalinlet_new((t_object *)x, 0);
-            outlet_new((t_object *)x, &s_signal);
+            outlet_new((t_object *)x, gensym("signal"));
         }
-        outlet_new((t_object *)x, &s_signal);
+        outlet_new((t_object *)x, gensym("signal"));
         x->l_vsize = 0;
         x->l_vtemp = NULL;
     }
